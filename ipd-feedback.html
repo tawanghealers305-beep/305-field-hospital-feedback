@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPD Patient Feedback — 305 Field Hospital</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #7c3aed;
+    --primary-light: #f3eeff;
+    --primary-mid: #a855f7;
+    --primary-dark: #5b21b6;
+    --bg: #faf8ff;
+    --card: #ffffff;
+    --text: #1e1b2e;
+    --muted: #7c6fa0;
+    --border: #ddd6fe;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(124,58,237,0.09) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(168,85,247,0.06) 0%, transparent 55%);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+    color: var(--text);
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .hero {
+    background: linear-gradient(140deg, #4c1d95 0%, #7c3aed 50%, #a855f7 100%);
+    border-radius: 24px;
+    padding: 34px 32px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeDown 0.6s ease;
+    box-shadow: 0 16px 48px rgba(124,58,237,0.32);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hospital-name {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #ddd6fe;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hospital-name::before {
+    content: '';
+    display: inline-block;
+    width: 22px; height: 2px;
+    background: #f9a8d4;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #ede9fe;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .dot {
+    width: 7px; height: 7px;
+    background: #f9a8d4;
+    border-radius: 50%;
+    animation: pulseAnim 2.5s infinite;
+    display: inline-block;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero p {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 16px;
+    border: 1.5px solid var(--border);
+    box-shadow: 0 2px 20px rgba(124,58,237,0.06);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .section-icon {
+    width: 38px; height: 38px;
+    background: var(--primary-light);
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .section-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+
+  .opt { font-size: 9px; background: #f3eeff; color: #a78bfa; padding: 1px 5px; border-radius: 4px; font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 3px; }
+
+  input[type="text"], input[type="date"], select, textarea {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: #fdfbff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+    background: white;
+  }
+
+  textarea { resize: vertical; min-height: 75px; }
+
+  .q-block { margin-bottom: 20px; }
+  .q-block:last-child { margin-bottom: 0; }
+
+  .q-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 11px;
+    line-height: 1.5;
+  }
+
+  .smileys { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sm-in { display: none; }
+
+  .sm-lbl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  .sm-lbl:hover { transform: scale(1.08); }
+
+  .sm-face {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    border: 2px solid #e5dcf5;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    background: #faf8ff;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .sm-txt {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #c4b5d8;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    transition: color 0.2s;
+    text-align: center;
+  }
+
+  .sm-in[value="1"]:checked + .sm-lbl .sm-face { background:#fee2e2; border-color:#f43f5e; box-shadow:0 4px 14px rgba(244,63,94,0.22); transform:scale(1.12); }
+  .sm-in[value="1"]:checked + .sm-lbl .sm-txt { color:#f43f5e; }
+  .sm-in[value="2"]:checked + .sm-lbl .sm-face { background:#fef3c7; border-color:#f59e0b; box-shadow:0 4px 14px rgba(245,158,11,0.22); transform:scale(1.12); }
+  .sm-in[value="2"]:checked + .sm-lbl .sm-txt { color:#d97706; }
+  .sm-in[value="3"]:checked + .sm-lbl .sm-face { background:#fffbeb; border-color:#fbbf24; box-shadow:0 4px 14px rgba(251,191,36,0.2); transform:scale(1.12); }
+  .sm-in[value="3"]:checked + .sm-lbl .sm-txt { color:#b45309; }
+  .sm-in[value="4"]:checked + .sm-lbl .sm-face { background:#d1fae5; border-color:#10b981; box-shadow:0 4px 14px rgba(16,185,129,0.22); transform:scale(1.12); }
+  .sm-in[value="4"]:checked + .sm-lbl .sm-txt { color:#059669; }
+  .sm-in[value="5"]:checked + .sm-lbl .sm-face { background:#ede9fe; border-color:#7c3aed; box-shadow:0 4px 14px rgba(124,58,237,0.28); transform:scale(1.12); }
+  .sm-in[value="5"]:checked + .sm-lbl .sm-txt { color:#7c3aed; }
+
+  .div { height: 1px; background: var(--border); margin: 18px 0; }
+
+  .yesno { display: flex; gap: 9px; flex-wrap: wrap; }
+  .yn-in { display: none; }
+
+  .yn-lbl {
+    padding: 8px 18px;
+    border-radius: 25px;
+    border: 1.5px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.18s;
+    background: #fdfbff;
+  }
+
+  .yn-lbl:hover { border-color: var(--primary); color: var(--primary); }
+  .yn-in:checked + .yn-lbl { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 3px 10px rgba(124,58,237,0.28); }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag-in { display: none; }
+
+  .tag-lbl {
+    padding: 6px 13px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.16s;
+    background: #fdfbff;
+  }
+
+  .tag-lbl:hover { border-color: var(--primary); color: var(--primary); }
+  .tag-in:checked + .tag-lbl { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); font-weight: 600; }
+
+  .nps-scale { display: flex; gap: 5px; flex-wrap: wrap; }
+  .nps-in { display: none; }
+
+  .nps-lbl {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.16s;
+    background: #fdfbff;
+  }
+
+  .nps-lbl:hover { border-color: var(--primary); color: var(--primary); }
+  .nps-in:checked + .nps-lbl { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 3px 10px rgba(124,58,237,0.25); }
+
+  .nps-legend { display: flex; justify-content: space-between; margin-top: 6px; }
+  .nps-legend span { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+  /* Inline comment box under each section */
+  .comment-box {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: #faf7ff;
+    border-radius: 10px;
+    border: 1px dashed var(--border);
+  }
+
+  .comment-box label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 8px;
+  }
+
+  .submit-wrap { text-align: center; }
+
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 15px 48px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 28px rgba(124,58,237,0.35);
+    transition: all 0.2s;
+  }
+
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(124,58,237,0.42); }
+  .submit-btn:active { transform: translateY(0); }
+
+  .privacy { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+  .success { display: none; text-align: center; padding: 50px 20px; animation: fadeUp 0.5s ease; }
+  .success.show { display: block; }
+  .success-icon { font-size: 64px; margin-bottom: 16px; }
+  .success h2 { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; }
+  .success p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes pulseAnim { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+  @media(max-width:520px) {
+    .grid2 { grid-template-columns: 1fr; }
+    .card { padding: 20px 16px; }
+    .hero { padding: 26px 18px; }
+    .hero h1 { font-size: 1.6rem; }
+    .sm-face { width: 44px; height: 44px; font-size: 20px; }
+    .nps-lbl { width: 34px; height: 34px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hospital-name">305 Field Hospital</div>
+    <div class="hero-badge"><span class="dot"></span> In-Patient Department — Discharge Survey</div>
+    <h1>How Was Your Stay<br>With Us?</h1>
+    <p>Please share your experience — your feedback shapes the care we give every patient 🙏</p>
+  </div>
+
+  <form id="ipdForm">
+
+    <!-- 1. ADMISSION DETAILS -->
+    <div class="card">
+      <div class="section-head">
+        <div class="section-icon">🏷️</div>
+        <div>
+          <div class="section-title">Admission Details</div>
+          <div class="section-sub">Basic information about your hospital stay</div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Patient Name <span class="opt">optional</span></label>
+          <input type="text" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label>Age Group</label>
+          <select>
+            <option value="" disabled selected>Select</option>
+            <option>Under 18</option><option>18–30</option><option>31–45</option>
+            <option>46–60</option><option>Above 60</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Date of Admission</label>
+          <input type="date">
+        </div>
+        <div class="field">
+          <label>Date of Discharge</label>
+          <input type="date">
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Treating Department</label>
+          <select>
+            <option value="" disabled selected>Select department</option>
+            <option>General Medicine</option><option>General Surgery</option>
+            <option>Nephrology</option><option>Cardiology</option>
+            <option>Neurology</option><option>Orthopaedics</option>
+            <option>Pulmonology</option><option>Oncology</option>
+            <option>Gynaecology & Obstetrics</option><option>Paediatrics</option>
+            <option>ICU / Critical Care</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Duration of Stay</label>
+          <select>
+            <option value="" disabled selected>Select</option>
+            <option>1 day (Day care)</option><option>2–3 days</option>
+            <option>4–7 days</option><option>1–2 weeks</option>
+            <option>More than 2 weeks</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. MEDICAL CARE — DOCTORS -->
+    <div class="card">
+      <div class="section-head">
+        <div class="section-icon">🩺</div>
+        <div>
+          <div class="section-title">Medical Care — Doctors</div>
+          <div class="section-sub">Your treating physician(s) and consultants</div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">How often did your <strong>treating doctor visit you</strong> during your stay?</div>
+        <div class="yesno">
+          <input type="radio" name="docvisit" value="daily" id="dv1" class="yn-in"><label for="dv1" class="yn-lbl">✅ Daily</label>
+          <input type="radio" name="docvisit" value="alternate" id="dv2" class="yn-in"><label for="dv2" class="yn-lbl">📅 Alternate days</label>
+          <input type="radio" name="docvisit" value="rarely" id="dv3" class="yn-in"><label for="dv3" class="yn-lbl">😐 Rarely</label>
+          <input type="radio" name="docvisit" value="barely" id="dv4" class="yn-in"><label for="dv4" class="yn-lbl">❌ Barely</label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">Were your <strong>diagnosis, treatment progress and test results</strong> explained clearly?</div>
+        <div class="smileys">
+          <input type="radio" name="docexplain" value="1" id="de1" class="sm-in"><label for="de1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="docexplain" value="2" id="de2" class="sm-in"><label for="de2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="docexplain" value="3" id="de3" class="sm-in"><label for="de3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="docexplain" value="4" id="de4" class="sm-in"><label for="de4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="docexplain" value="5" id="de5" class="sm-in"><label for="de5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">Did the doctor respond promptly when you had <strong>urgent concerns or queries</strong>?</div>
+        <div class="smileys">
+          <input type="radio" name="docrespond" value="1" id="dr1" class="sm-in"><label for="dr1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="docrespond" value="2" id="dr2" class="sm-in"><label for="dr2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="docrespond" value="3" id="dr3" class="sm-in"><label for="dr3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="docrespond" value="4" id="dr4" class="sm-in"><label for="dr4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="docrespond" value="5" id="dr5" class="sm-in"><label for="dr5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">Were you involved in decisions about your <strong>own treatment plan</strong>?</div>
+        <div class="yesno">
+          <input type="radio" name="shared" value="yes" id="sd1" class="yn-in"><label for="sd1" class="yn-lbl">👍 Yes</label>
+          <input type="radio" name="shared" value="partial" id="sd2" class="yn-in"><label for="sd2" class="yn-lbl">🤔 Somewhat</label>
+          <input type="radio" name="shared" value="no" id="sd3" class="yn-in"><label for="sd3" class="yn-lbl">👎 No</label>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <label>💬 Your Comments on Medical Care & Doctors <span class="opt">optional</span></label>
+        <textarea placeholder="e.g. The doctor explained everything clearly, or the doctor was rarely available during rounds..."></textarea>
+      </div>
+    </div>
+
+    <!-- 3. NURSING & BEDSIDE CARE -->
+    <div class="card">
+      <div class="section-head">
+        <div class="section-icon">💊</div>
+        <div>
+          <div class="section-title">Nursing & Bedside Care</div>
+          <div class="section-sub">The nurses and ward staff who cared for you</div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">How was the <strong>attitude and responsiveness of nursing staff</strong>?</div>
+        <div class="smileys">
+          <input type="radio" name="nurseatt" value="1" id="na1" class="sm-in"><label for="na1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="nurseatt" value="2" id="na2" class="sm-in"><label for="na2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="nurseatt" value="3" id="na3" class="sm-in"><label for="na3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="nurseatt" value="4" id="na4" class="sm-in"><label for="na4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="nurseatt" value="5" id="na5" class="sm-in"><label for="na5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">Were your <strong>medications given on time</strong> and correctly explained?</div>
+        <div class="smileys">
+          <input type="radio" name="medtime" value="1" id="mt1" class="sm-in"><label for="mt1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="medtime" value="2" id="mt2" class="sm-in"><label for="mt2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="medtime" value="3" id="mt3" class="sm-in"><label for="mt3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="medtime" value="4" id="mt4" class="sm-in"><label for="mt4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="medtime" value="5" id="mt5" class="sm-in"><label for="mt5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">Did the nursing staff attend to call bells / requests <strong>promptly</strong>?</div>
+        <div class="yesno">
+          <input type="radio" name="callbell" value="always" id="cb1" class="yn-in"><label for="cb1" class="yn-lbl">✅ Always</label>
+          <input type="radio" name="callbell" value="usually" id="cb2" class="yn-in"><label for="cb2" class="yn-lbl">👍 Usually</label>
+          <input type="radio" name="callbell" value="sometimes" id="cb3" class="yn-in"><label for="cb3" class="yn-lbl">😐 Sometimes</label>
+          <input type="radio" name="callbell" value="rarely" id="cb4" class="yn-in"><label for="cb4" class="yn-lbl">👎 Rarely</label>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <label>💬 Your Comments on Nursing & Bedside Care <span class="opt">optional</span></label>
+        <textarea placeholder="e.g. The night-duty nurses were very attentive, or medications were sometimes delayed..."></textarea>
+      </div>
+    </div>
+
+    <!-- 4. WARD, FOOD & COMFORT -->
+    <div class="card">
+      <div class="section-head">
+        <div class="section-icon">🛏️</div>
+        <div>
+          <div class="section-title">Ward, Food & Comfort</div>
+          <div class="section-sub">Your living environment during the stay</div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">How was the <strong>cleanliness of the ward and common areas</strong>?</div>
+        <div class="smileys">
+          <input type="radio" name="wardclean" value="1" id="wc1" class="sm-in"><label for="wc1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="wardclean" value="2" id="wc2" class="sm-in"><label for="wc2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="wardclean" value="3" id="wc3" class="sm-in"><label for="wc3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="wardclean" value="4" id="wc4" class="sm-in"><label for="wc4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="wardclean" value="5" id="wc5" class="sm-in"><label for="wc5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">How was the <strong>cleanliness of the toilets / washrooms</strong> in the ward?</div>
+        <div class="smileys">
+          <input type="radio" name="wardtoilet" value="1" id="wt1" class="sm-in"><label for="wt1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="wardtoilet" value="2" id="wt2" class="sm-in"><label for="wt2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="wardtoilet" value="3" id="wt3" class="sm-in"><label for="wt3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="wardtoilet" value="4" id="wt4" class="sm-in"><label for="wt4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="wardtoilet" value="5" id="wt5" class="sm-in"><label for="wt5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">How was the <strong>quality and appropriateness of hospital food / diet</strong>?</div>
+        <div class="smileys">
+          <input type="radio" name="food" value="1" id="fd1" class="sm-in"><label for="fd1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="food" value="2" id="fd2" class="sm-in"><label for="fd2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="food" value="3" id="fd3" class="sm-in"><label for="fd3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="food" value="4" id="fd4" class="sm-in"><label for="fd4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="food" value="5" id="fd5" class="sm-in"><label for="fd5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">How was your overall <strong>comfort and rest</strong> during your hospital stay?</div>
+        <div class="smileys">
+          <input type="radio" name="comfort" value="1" id="co1" class="sm-in"><label for="co1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="comfort" value="2" id="co2" class="sm-in"><label for="co2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="comfort" value="3" id="co3" class="sm-in"><label for="co3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="comfort" value="4" id="co4" class="sm-in"><label for="co4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="comfort" value="5" id="co5" class="sm-in"><label for="co5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">Were your <strong>privacy and dignity maintained</strong> throughout your stay?</div>
+        <div class="yesno">
+          <input type="radio" name="priv" value="yes" id="pv1" class="yn-in"><label for="pv1" class="yn-lbl">👍 Yes, always</label>
+          <input type="radio" name="priv" value="mostly" id="pv2" class="yn-in"><label for="pv2" class="yn-lbl">🤔 Mostly</label>
+          <input type="radio" name="priv" value="no" id="pv3" class="yn-in"><label for="pv3" class="yn-lbl">👎 Could improve</label>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <label>💬 Your Comments on Ward, Food & Comfort <span class="opt">optional</span></label>
+        <textarea placeholder="e.g. Ward was clean and comfortable, food could use more variety, noise at night was disturbing..."></textarea>
+      </div>
+    </div>
+
+    <!-- 5. PROCEDURES & SPECIAL AREAS -->
+    <div class="card">
+      <div class="section-head">
+        <div class="section-icon">🔬</div>
+        <div>
+          <div class="section-title">Procedures & Special Areas</div>
+          <div class="section-sub">Rate only what is applicable to your stay</div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">If you underwent a <strong>procedure or surgery</strong>, how was the experience?</div>
+        <div class="smileys">
+          <input type="radio" name="proc" value="1" id="pr1" class="sm-in"><label for="pr1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="proc" value="2" id="pr2" class="sm-in"><label for="pr2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="proc" value="3" id="pr3" class="sm-in"><label for="pr3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="proc" value="4" id="pr4" class="sm-in"><label for="pr4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="proc" value="5" id="pr5" class="sm-in"><label for="pr5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+          <input type="radio" name="proc" value="na" id="pr0" class="sm-in"><label for="pr0" class="sm-lbl"><div class="sm-face" style="font-size:13px;color:#aaa;">N/A</div><span class="sm-txt">Not done</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">If you were in the <strong>ICU / Critical Care</strong>, how was the care provided?</div>
+        <div class="smileys">
+          <input type="radio" name="icu" value="1" id="ic1" class="sm-in"><label for="ic1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="icu" value="2" id="ic2" class="sm-in"><label for="ic2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="icu" value="3" id="ic3" class="sm-in"><label for="ic3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="icu" value="4" id="ic4" class="sm-in"><label for="ic4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="icu" value="5" id="ic5" class="sm-in"><label for="ic5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+          <input type="radio" name="icu" value="na" id="ic0" class="sm-in"><label for="ic0" class="sm-lbl"><div class="sm-face" style="font-size:13px;color:#aaa;">N/A</div><span class="sm-txt">Not visited</span></label>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <label>💬 Your Comments on Procedures & Special Areas <span class="opt">optional</span></label>
+        <textarea placeholder="e.g. The procedure was explained beforehand and I felt at ease, or the ICU staff were exceptional..."></textarea>
+      </div>
+    </div>
+
+    <!-- 6. DISCHARGE PROCESS -->
+    <div class="card">
+      <div class="section-head">
+        <div class="section-icon">📄</div>
+        <div>
+          <div class="section-title">Discharge Process</div>
+          <div class="section-sub">Your experience leaving the hospital</div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Were you given a clear <strong>discharge summary with instructions</strong> for follow-up care and medications at home?</div>
+        <div class="yesno">
+          <input type="radio" name="discharge" value="yes" id="ds1" class="yn-in"><label for="ds1" class="yn-lbl">👍 Yes, clearly</label>
+          <input type="radio" name="discharge" value="partial" id="ds2" class="yn-in"><label for="ds2" class="yn-lbl">🤔 Partially</label>
+          <input type="radio" name="discharge" value="no" id="ds3" class="yn-in"><label for="ds3" class="yn-lbl">👎 Not at all</label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">How smooth was the <strong>discharge process</strong> (paperwork, waiting time, final clearance)?</div>
+        <div class="smileys">
+          <input type="radio" name="dischargesat" value="1" id="dss1" class="sm-in"><label for="dss1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="dischargesat" value="2" id="dss2" class="sm-in"><label for="dss2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="dischargesat" value="3" id="dss3" class="sm-in"><label for="dss3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="dischargesat" value="4" id="dss4" class="sm-in"><label for="dss4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="dischargesat" value="5" id="dss5" class="sm-in"><label for="dss5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <label>💬 Your Comments on the Discharge Process <span class="opt">optional</span></label>
+        <textarea placeholder="e.g. Discharge was smooth and instructions were clear, or the discharge took longer than expected..."></textarea>
+      </div>
+    </div>
+
+    <!-- 7. OVERALL EXPERIENCE -->
+    <div class="card">
+      <div class="section-head">
+        <div class="section-icon">⭐</div>
+        <div>
+          <div class="section-title">Overall Experience</div>
+          <div class="section-sub">Your final verdict on your stay at 305 Field Hospital</div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text"><strong>Overall</strong>, how satisfied were you with your inpatient stay?</div>
+        <div class="smileys">
+          <input type="radio" name="overall" value="1" id="ov1" class="sm-in"><label for="ov1" class="sm-lbl"><div class="sm-face">😢</div><span class="sm-txt">Very Bad</span></label>
+          <input type="radio" name="overall" value="2" id="ov2" class="sm-in"><label for="ov2" class="sm-lbl"><div class="sm-face">😞</div><span class="sm-txt">Poor</span></label>
+          <input type="radio" name="overall" value="3" id="ov3" class="sm-in"><label for="ov3" class="sm-lbl"><div class="sm-face">😐</div><span class="sm-txt">Average</span></label>
+          <input type="radio" name="overall" value="4" id="ov4" class="sm-in"><label for="ov4" class="sm-lbl"><div class="sm-face">🙂</div><span class="sm-txt">Good</span></label>
+          <input type="radio" name="overall" value="5" id="ov5" class="sm-in"><label for="ov5" class="sm-lbl"><div class="sm-face">😄</div><span class="sm-txt">Excellent</span></label>
+        </div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text">On a scale of 0–10, how likely are you to <strong>recommend 305 Field Hospital</strong> to others?</div>
+        <div class="nps-scale">
+          <input type="radio" name="nps" value="0" id="np0" class="nps-in"><label for="np0" class="nps-lbl">0</label>
+          <input type="radio" name="nps" value="1" id="np1" class="nps-in"><label for="np1" class="nps-lbl">1</label>
+          <input type="radio" name="nps" value="2" id="np2" class="nps-in"><label for="np2" class="nps-lbl">2</label>
+          <input type="radio" name="nps" value="3" id="np3" class="nps-in"><label for="np3" class="nps-lbl">3</label>
+          <input type="radio" name="nps" value="4" id="np4" class="nps-in"><label for="np4" class="nps-lbl">4</label>
+          <input type="radio" name="nps" value="5" id="np5" class="nps-in"><label for="np5" class="nps-lbl">5</label>
+          <input type="radio" name="nps" value="6" id="np6" class="nps-in"><label for="np6" class="nps-lbl">6</label>
+          <input type="radio" name="nps" value="7" id="np7" class="nps-in"><label for="np7" class="nps-lbl">7</label>
+          <input type="radio" name="nps" value="8" id="np8" class="nps-in"><label for="np8" class="nps-lbl">8</label>
+          <input type="radio" name="nps" value="9" id="np9" class="nps-in"><label for="np9" class="nps-lbl">9</label>
+          <input type="radio" name="nps" value="10" id="np10" class="nps-in"><label for="np10" class="nps-lbl">10</label>
+        </div>
+        <div class="nps-legend"><span>Not at all likely</span><span>Extremely likely</span></div>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="q-block">
+        <div class="q-text" style="margin-bottom:10px;">Highlights of your stay — <span style="font-weight:400;color:var(--muted)">select all that apply</span></div>
+        <div class="tags">
+          <input type="checkbox" id="tg1" class="tag-in"><label for="tg1" class="tag-lbl">❤️ Compassionate nursing</label>
+          <input type="checkbox" id="tg2" class="tag-in"><label for="tg2" class="tag-lbl">🩺 Excellent doctors</label>
+          <input type="checkbox" id="tg3" class="tag-in"><label for="tg3" class="tag-lbl">🧹 Clean ward</label>
+          <input type="checkbox" id="tg4" class="tag-in"><label for="tg4" class="tag-lbl">🍽️ Good food</label>
+          <input type="checkbox" id="tg5" class="tag-in"><label for="tg5" class="tag-lbl">📋 Clear discharge info</label>
+          <input type="checkbox" id="tg6" class="tag-in"><label for="tg6" class="tag-lbl">⚡ Prompt response</label>
+          <input type="checkbox" id="tg7" class="tag-in"><label for="tg7" class="tag-lbl">⏳ Slow discharge</label>
+          <input type="checkbox" id="tg8" class="tag-in"><label for="tg8" class="tag-lbl">🍽️ Poor food quality</label>
+          <input type="checkbox" id="tg9" class="tag-in"><label for="tg9" class="tag-lbl">😞 Noise / disturbance</label>
+          <input type="checkbox" id="tg10" class="tag-in"><label for="tg10" class="tag-lbl">🔔 Slow nurse response</label>
+          <input type="checkbox" id="tg11" class="tag-in"><label for="tg11" class="tag-lbl">🚽 Unclean washroom</label>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <label>💬 Final Comments, Suggestions & Staff Acknowledgements <span class="opt">optional</span></label>
+        <textarea style="min-height:100px;" placeholder="Share anything else — what made your stay comfortable, what we can improve, or acknowledge a staff member by name who stood out for you..."></textarea>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="button" class="submit-btn" onclick="submitForm('ipdForm','ipdSuccess')">Submit IPD Feedback 🏥</button>
+      <p class="privacy">🔒 Your responses are confidential and used solely to improve patient care.</p>
+    </div>
+  </form>
+
+  <div class="card success" id="ipdSuccess">
+    <div class="success-icon">💜</div>
+    <h2>Thank You for Sharing!</h2>
+    <p>Your feedback on your stay at <strong>305 Field Hospital</strong> has been received.<br>Wishing you a speedy recovery! 🙏</p>
+  </div>
+
+</div>
+<script>
+  function submitForm(formId, successId) {
+    document.getElementById(formId).style.display = 'none';
+    document.getElementById(successId).classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>305 Field Hospital — Feedback QR Codes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --opd: #1d7ebe;
+    --ipd: #7c3aed;
+    --dark: #0a0f1e;
+    --card: #111827;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+    color: white;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(29,126,190,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(124,58,237,0.1) 0%, transparent 50%);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.6s ease;
+  }
+
+  .emblem {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 8px 20px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .cross {
+    color: #ef4444;
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.2rem;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  .tagline {
+    color: rgba(255,255,255,0.4);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    max-width: 860px;
+    margin: 0 auto 40px;
+  }
+
+  .qr-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 36px 28px;
+    border: 1px solid var(--border);
+    text-align: center;
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .qr-card.opd { border-top: 3px solid var(--opd); }
+  .qr-card.ipd { border-top: 3px solid var(--ipd); }
+  .qr-card:nth-child(2) { animation-delay: 0.1s; }
+
+  .qr-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    opacity: 0.04;
+  }
+
+  .qr-card.opd::before { background: radial-gradient(at top, var(--opd), transparent); }
+  .qr-card.ipd::before { background: radial-gradient(at top, var(--ipd), transparent); }
+
+  .card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .opd .card-badge { background: rgba(29,126,190,0.15); color: #60b4f0; border: 1px solid rgba(29,126,190,0.3); }
+  .ipd .card-badge { background: rgba(124,58,237,0.15); color: #c084fc; border: 1px solid rgba(124,58,237,0.3); }
+
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .opd .card-title { color: #93c5fd; }
+  .ipd .card-title { color: #c4b5fd; }
+
+  .card-sub {
+    color: rgba(255,255,255,0.35);
+    font-size: 12px;
+    margin-bottom: 28px;
+  }
+
+  .qr-frame {
+    display: inline-block;
+    padding: 16px;
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    position: relative;
+  }
+
+  .qr-frame canvas, .qr-frame img { display: block; border-radius: 4px; }
+
+  /* Corner decorations */
+  .qr-frame::before, .qr-frame::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    border-radius: 3px;
+  }
+
+  .opd .qr-frame::before { top: -2px; left: -2px; border-top: 3px solid var(--opd); border-left: 3px solid var(--opd); }
+  .opd .qr-frame::after  { bottom: -2px; right: -2px; border-bottom: 3px solid var(--opd); border-right: 3px solid var(--opd); }
+  .ipd .qr-frame::before { top: -2px; left: -2px; border-top: 3px solid var(--ipd); border-left: 3px solid var(--ipd); }
+  .ipd .qr-frame::after  { bottom: -2px; right: -2px; border-bottom: 3px solid var(--ipd); border-right: 3px solid var(--ipd); }
+
+  .url-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .url-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.3);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .url-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: rgba(255,255,255,0.6);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    min-width: 0;
+  }
+
+  .url-input::placeholder { color: rgba(255,255,255,0.2); }
+
+  .refresh-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.4);
+    font-size: 16px;
+    padding: 2px;
+    transition: color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .refresh-btn:hover { color: white; transform: rotate(90deg); }
+
+  .scan-hint {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* Instructions */
+  .instructions {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 32px;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+
+  .instructions h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .step {
+    text-align: center;
+  }
+
+  .step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.4);
+    margin: 0 auto 10px;
+  }
+
+  .step-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+  }
+
+  .step-text strong { color: rgba(255,255,255,0.7); display: block; margin-bottom: 3px; font-size: 13px; }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  @media(max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 2.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="emblem"><span class="cross">✚</span> 305 Field Hospital <span class="cross">✚</span></div>
+  <h1>Patient Feedback<br>QR Codes</h1>
+  <p class="tagline">Scan to share your experience · Paste your hosted URL below to regenerate</p>
+</div>
+
+<div class="cards">
+
+  <!-- OPD -->
+  <div class="qr-card opd">
+    <div class="card-badge">🏥 Out-Patient</div>
+    <div class="card-title">OPD Feedback</div>
+    <div class="card-sub">For patients visiting the Out-Patient Department</div>
+    <div class="qr-frame">
+      <div id="qr-opd"></div>
+    </div>
+    <div class="url-box">
+      <span class="url-label">URL</span>
+      <input class="url-input" id="url-opd" type="text" placeholder="https://your-host.com/opd-feedback.html" value="https://your-host.com/opd-feedback.html">
+      <button class="refresh-btn" onclick="regenerate('opd')" title="Regenerate QR">↻</button>
+    </div>
+    <div class="scan-hint">📱 Point camera at QR code to open form</div>
+  </div>
+
+  <!-- IPD -->
+  <div class="qr-card ipd">
+    <div class="card-badge">🛏️ In-Patient</div>
+    <div class="card-title">IPD Feedback</div>
+    <div class="card-sub">For patients discharged from the In-Patient Department</div>
+    <div class="qr-frame">
+      <div id="qr-ipd"></div>
+    </div>
+    <div class="url-box">
+      <span class="url-label">URL</span>
+      <input class="url-input" id="url-ipd" type="text" placeholder="https://your-host.com/ipd-feedback.html" value="https://your-host.com/ipd-feedback.html">
+      <button class="refresh-btn" onclick="regenerate('ipd')" title="Regenerate QR">↻</button>
+    </div>
+    <div class="scan-hint">📱 Point camera at QR code to open form</div>
+  </div>
+</div>
+
+<div class="instructions">
+  <h3>⚙️ How to Go Live</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Host the forms</strong>Upload the OPD & IPD HTML files to Google Sites, GitHub Pages, or any web host</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Paste the URL</strong>Copy the live URL into the input box above and click ↻ to regenerate the QR code</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Print & display</strong>Print these QR codes and place them at OPD reception and IPD discharge counters</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Collect & analyse</strong>Use the Analysis Dashboard to process collected responses and generate insights</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const qrInstances = {};
+
+  function makeQR(id, url) {
+    const el = document.getElementById('qr-' + id);
+    el.innerHTML = '';
+    qrInstances[id] = new QRCode(el, {
+      text: url,
+      width: 200,
+      height: 200,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  function regenerate(id) {
+    const url = document.getElementById('url-' + id).value.trim();
+    if (!url) return;
+    makeQR(id, url);
+  }
+
+  // Init on load
+  window.onload = () => {
+    makeQR('opd', document.getElementById('url-opd').value);
+    makeQR('ipd', document.getElementById('url-ipd').value);
+  };
+
+  // Regenerate on Enter key
+  ['opd','ipd'].forEach(id => {
+    document.getElementById('url-' + id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') regenerate(id);
+    });
+  });
+</script>
+</body>
+</html>
